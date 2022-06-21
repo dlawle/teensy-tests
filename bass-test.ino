@@ -3,6 +3,9 @@
 #include <SPI.h>
 #include <SD.h>
 #include <SerialFlash.h>
+#include <Bounce.h> 
+
+Bounce button0 = Bounce(0,15);
 
 // GUItool: begin automatically generated code
 AudioSynthWaveform       waveform1;      //xy=87,273
@@ -23,3 +26,48 @@ AudioConnection          patchCord7(multiply1, 0, i2s1, 0);
 AudioConnection          patchCord8(multiply1, 0, i2s1, 1);
 AudioControlSGTL5000     sgtl5000_1;     //xy=97,38
 // GUItool: end automatically generated code
+
+void setup() {
+  // Main setup
+  Serial.begin(9600);
+  AudioMemory(20);
+  sgtl5000_1.enable();
+  sgtl5000_1.volume(0.32);
+  
+  // Pins
+  pinmode(32, INPUT_PULLUP);
+  
+  // Mixer 
+  mixer1.gain(0, 0.1);
+  mixer1.gain(1, 0.1);
+  mixer1.gain(2, 0.1);
+  mixer1.gain(3 , 0.1);
+  
+  // Waveform
+  waveform1.begin(WAVEFORM_SQUARE);
+  waveform1.amplitude(.75);
+  waveform1.frequency(50);
+  waveform1.pulseWidth(.15);
+  
+  //envelope
+  envelope1.attack(10);
+  envelope1.hold(10);
+  envelope1.decay(25);
+  envelope1.sustain(0.4);
+  envelope1.release(70);
+  
+  // PWM
+  pwm1.amplitude(.75);
+  pwm1.frequency(50);
+}
+
+  void loop() { 
+    button0.update();
+    if (button0.fallingEdge()) {
+      envelope1.noteOn();
+    }
+    
+    if (button0.risingEdge()) {
+            envelope1.noteOn();
+    }
+  }
