@@ -11,9 +11,9 @@ AudioEffectEnvelope      envelope1;      //xy=287,246
 AudioEffectMultiply      multiply1;      //xy=492,348
 AudioMixer4              mixer1;         //xy=670,342
 AudioOutputI2S           i2s1;           //xy=866,349
-AudioConnection          patchCord1(waveform1, envelope1);
+AudioConnection          patchCord1(waveform1, envelope1);  //Removing envelope for now
 AudioConnection          patchCord2(noise1, 0, multiply1, 1);
-AudioConnection          patchCord3(envelope1, 0, multiply1, 0);
+AudioConnection          patchCord3(envelope1, 0, multiply1, 0); //Removing envelope for now
 AudioConnection          patchCord4(multiply1, 0, mixer1, 2);
 AudioConnection          patchCord5(mixer1, 0, i2s1, 0);
 AudioControlSGTL5000     sgtl5000_1;     //xy=97,38
@@ -39,9 +39,27 @@ void setup() {
   AudioInterrupts();
 
   // Set square wave
-  waveform1.begin(square)
+  waveform1.begin(WAVEFORM_SQUARE); 
+  
+  // set manual trigger (testing)
+  pinMode(33, INPUT);
+  
+  // set noise amplitude
+  noise1.amplitude(.5);
+  
+  //set up the mixer
+  mixer1.gain(0, 0);          // unused, gain 0
+  mixer1.gain(1, 0);          // unused, gain 0
+  mixer1.gain(2, 0.5);        // test gain
+  mixer1.gain(3, 0);          // unused, gain 0
+  
+  // set up envelop - zero for now, as will be knobbed
+  envelope1.attack(0.0);
+  envelope1.hold(0.0);
+  envelope1.decay(0.0);
+  envelope1.release(0.0);
+  envelope1.noteoff(); // does this need set in setup? 
 }
-
 
 void loop() {
 
@@ -52,15 +70,24 @@ void loop() {
 
   waveform1.frequency(knob1)
   waveform1.offset(knob2)
-  waveform1.pulsewidth(knob3)
+  waveform1.pulseWidth(knob3)
 
-  Serial.print("Frequency: ");
-  Serial.print(knob1 * 100.0);
-  Serial.print("%, Offset: ");
-  Serial.print(knob2 * 100.0);
-  Serial.print("%, Pulse Width: ");
-  Serial.print(knob3 * 100.0);
-  Serial.print("% / ");
+//Serial.print("Frequency: ");
+//Serial.print(knob1 * 100.0);
+//Serial.print("%, Offset: ");
+//Serial.print(knob2 * 100.0);
+//Serial.print("%, Pulse Width: ");
+//Serial.print(knob3 * 100.0);
+//Serial.print("% / ");
+  
+  {
+  if (digitalRead(33) == HIGH) {
+    Serial.println("Button is not pressed... sending noteOff");
+    envelope1.noteOff()
+  } else {
+    Serial.println("Button pressed!!! sending noteOn");
+    envelope1.noteOn()
+  }
 
   // determine how much actual memory is needed for the audio processes
   Serial.print("Max audio blocks used: ");
