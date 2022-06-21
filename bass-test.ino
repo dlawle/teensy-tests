@@ -35,7 +35,7 @@ void setup() {
   sgtl5000_1.volume(0.32);
   
   // Pins
-  pinmode(32, INPUT_PULLUP);
+  pinMode(32, INPUT_PULLUP);
   
   // Mixer 
   mixer1.gain(0, 0.1);
@@ -64,10 +64,18 @@ void setup() {
   void loop() { 
     button0.update();
     if (button0.fallingEdge()) {
-      envelope1.noteOn();
+      envelope1.noteOff();
+      Serial.println("Button released, sending NoteOff");
     }
     
     if (button0.risingEdge()) {
-            envelope1.noteOn();
+      envelope1.noteOn();
+      Serial.Println("Button Pressed, sending NoteOn");
+      Serial.Println();
     }
-  }
+  Serial.Println("Max Audio Blocks Used: ");
+  Serial.Print(AudioMemoryUsageMax());
+  Serial.Println();
+  delay(100);
+}
+
