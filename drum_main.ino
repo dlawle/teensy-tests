@@ -5,6 +5,13 @@
 #include <SD.h>
 #include <SerialFlash.h>
 
+// inputs
+#define pot1            A13 // EnvDecay
+#define pot2            A14 // Waveform 1 Freq
+#define pot3            A15 // Waveform 2 Freq
+#define pot4            A16 // BP Freq
+#define pot5            A17 // LP Freq
+
 // Audio Processing Nodes
 AudioSynthWaveform              hatPulse; //xy=90,715
 AudioSynthWaveform              cymPulse; //xy=90,925
@@ -80,25 +87,49 @@ AudioControlSGTL5000     sgtl5000_1;     //xy=110,175
 
 void setup() {
   Serial.begin(9600);
-  pinMode(6, INPUT_PULLUP); // mode select
-  pinMode(7, INPUT_PULLUP); // mode select
-  pinMode(8, INPUT_PULLUP); // mode select
-  pinMode(9, INPUT_PULLUP); // mode select
-
+  pinMode(28, INPUT_PULLUP); // mode select
+  pinMode(29, INPUT_PULLUP); // mode select
+  pinMode(30, INPUT_PULLUP); // mode select
+  pinMode(31, INPUT_PULLUP); // mode select
 }
 
 void loop() {
  
- if (digitalRead(6) == LOW) {
-  Serial.println("drum");
- } else if (digitalRead(7) == LOW) {
-  Serial.println("snare");
- }else if (digitalRead(8) == LOW) {
-  Serial.println("hat");
- }else if (digitalRead(9) == LOW) {
-  Serial.println("cym");
- }
+ float knob1 = (float)analogRead(pot1)/2;   // EnvDecay
+ float knob2 = (float)analogRead(pot2)/2;   // Filter 1 
+ float knob3 = (float)analogRead(pot3)/2;   // Filter 2
+ float knob4 = (float)analogRead(pot4)/2;   // Tone 1 
+ float knob5 = (float)analogRead(pot5)/2;   // Tone 2 
 
+ if (digitalRead(6) == LOW) {
+	  Serial.println("drum");
+	  bassEnv.decay(knob1);
+	  bassBP.frequency(knob2);
+	  bassLP.frequency(knob2);
+	  bassSine1.frequency(knob4);
+	  bassSine2.frequency(knob5);
+ } else if (digitalRead(7) == LOW) {
+	  Serial.println("snare");
+	  snareEnv.decay(knob1);
+	  snareBP.frequency(knob2);
+	  snareLP.frequency(knob2);
+	  snareSaw.frequency(knob4);
+	  snareNoise.frequency(knob5); 
+ }else if (digitalRead(8) == LOW) {
+ 	  Serial.println("hat");
+  	hatEnv.decay(knob1);
+	  hatBP.frequency(knob2);
+	  hatLP.frequency(knob2);
+	  hatPulse.frequency(knob4);
+	  hatNoise.frequency(knob5); 
+ }else if (digitalRead(9) == LOW) {
+  	Serial.println("cym");
+  	cymEnv.decay(knob1);
+	  cymBP.frequency(knob2);
+	  cymLP.frequency(knob2);
+	  cymPulse.frequency(knob4);
+	  cymNoise.frequency(knob5); 
+ }
 
 
 }
