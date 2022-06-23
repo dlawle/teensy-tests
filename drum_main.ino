@@ -4,6 +4,9 @@
 #include <SPI.h>
 #include <SD.h>
 #include <SerialFlash.h>
+#include <Bounce.h> 
+
+Bounce button0 = Bounce(33,15);
 
 // inputs
 #define pot1            A13 // EnvDecay
@@ -87,11 +90,19 @@ AudioControlSGTL5000     sgtl5000_1;     //xy=110,175
 
 void setup() {
   Serial.begin(9600);
+  AudioMemory(20);
+  sgtl5000_1.enable();
+  sgtl5000_1.volume(0.9);
+  
+  // Pins
+  pinMode(25, INPUT_PULLUP); // test trigger
   pinMode(28, INPUT_PULLUP); // mode select
   pinMode(29, INPUT_PULLUP); // mode select
   pinMode(30, INPUT_PULLUP); // mode select
   pinMode(31, INPUT_PULLUP); // mode select
 }
+
+elapsedMillis timeout = 0;
 
 void loop() {
  
@@ -102,33 +113,73 @@ void loop() {
  float knob5 = (float)analogRead(pot5)/2;   // Tone 2 
 
  if (digitalRead(6) == LOW) {
-	  Serial.println("drum");
 	  bassEnv.decay(knob1);
 	  bassBP.frequency(knob2);
 	  bassLP.frequency(knob2);
 	  bassSine1.frequency(knob4);
 	  bassSine2.frequency(knob5);
+	  if (button0.fallingEdge()) {
+		Serial.println("Sending Drum Trigger");
+		envelope1.noteOn();
+		timeout = 0;
+	  }
+	  if (button0.risingEdge()) {
+		bassEnv.noteOff();
+		Serial.println("Trigger Released, sending NoteOff");
+		Serial.println();
+		timeout = 0;
+   	  }
  } else if (digitalRead(7) == LOW) {
-	  Serial.println("snare");
 	  snareEnv.decay(knob1);
 	  snareBP.frequency(knob2);
 	  snareLP.frequency(knob2);
 	  snareSaw.frequency(knob4);
 	  snareNoise.frequency(knob5); 
+	  if (button0.fallingEdge()) {
+		Serial.println("Sending Snare Trigger");
+		snareEnv.noteOn();
+		timeout = 0;
+	  }
+	  if (button0.risingEdge()) {
+		snareEnv.noteOff();
+		Serial.println("Trigger Released, sending NoteOff");
+		Serial.println();
+		timeout = 0;
+   	  }
  }else if (digitalRead(8) == LOW) {
- 	  Serial.println("hat");
-  	hatEnv.decay(knob1);
+  	  hatEnv.decay(knob1);
 	  hatBP.frequency(knob2);
 	  hatLP.frequency(knob2);
 	  hatPulse.frequency(knob4);
 	  hatNoise.frequency(knob5); 
+	  if (button0.fallingEdge()) {
+		Serial.println("Sending hat Trigger");
+		hatEnv.noteOn();
+		timeout = 0;
+	  }
+	  if (button0.risingEdge()) {
+		hatEnv.noteOff();
+		Serial.println("Trigger Released, sending NoteOff");
+		Serial.println();
+		timeout = 0;
+   	  }
  }else if (digitalRead(9) == LOW) {
-  	Serial.println("cym");
-  	cymEnv.decay(knob1);
+          cymEnv.decay(knob1);
 	  cymBP.frequency(knob2);
 	  cymLP.frequency(knob2);
 	  cymPulse.frequency(knob4);
 	  cymNoise.frequency(knob5); 
+ 	  if (button0.fallingEdge()) {
+		Serial.println("Sending cymble Trigger");
+		cymEnv.noteOn();
+		timeout = 0;
+	  }
+	  if (button0.risingEdge()) {
+		cymEnv.noteOff();
+		Serial.println("Trigger Released, sending NoteOff");
+		Serial.println();
+		timeout = 0;
+   	  }
  }
 
 
