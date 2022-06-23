@@ -121,6 +121,91 @@ bassEnv.release(70);
 bassBP.resonance(0.7);
 bassLP.resonance(0.7);
 
+
+
+//////////////////////////
+// SNARE PARAMETERS     //
+//////////////////////////
+
+// SNARE WAVEFORMS
+snareSaw.begin(WAVEFORM_SAWTOOTH_REVERSE);
+snareSaw.frequency(180);
+snareSaw.amplitude(.75);
+snareNoise.amplitude(.75);
+
+// SNARE MIXER 
+snareMixer.gain(0, 0.5);
+snareMixer.gain(1, 0.5);
+snareMixer.gain(2, 0.5);
+snareMixer.gain(3 , 0.5);
+
+// SNARE ENVELOPE
+snareEnv.attack(0);
+snareEnv.hold(5);
+snareEnv.delay(0);
+snareEnv.sustain(0);
+snareEnv.release(70);
+
+// SNARE FILTER
+snareBP.resonance(0.7);
+snareLP.resonance(0.7);
+
+//////////////////////////
+// "HIHAT" PARAMETERS   //
+//////////////////////////
+
+// HIHAT WAVEFORMS
+hatPulse.begin(WAVEFORM_PULSE);
+hatPulse.frequency(30000);
+hatPulse.amplitude(.75);
+hatNoise.amplitude(.75);
+
+// HIHAT MIXER
+hatMixer.gain(0, 0.5);
+hatMixer.gain(1, 0.5);
+hatMixer.gain(2, 0.5);
+hatMixer.gain(3 , 0.5);
+
+// HIHAT ENVELOPE
+hatEnv.attack(0);
+hatEnv.hold(5);
+hatEnv.delay(0);
+hatEnv.sustain(0);
+hatEnv.release(150);
+
+// HIHAT Filter
+hatBP.resonance(0.7);
+hatLP.resonance(0.7);
+
+
+//////////////////////////
+// "CYMBAL" PARAMETERS   //
+//////////////////////////
+
+// CYMBAL WAVEFORMS
+cymPulse.begin(WAVEFORM_PULSE);
+cymPulse.frequency(30000);
+cymPulse.amplitude(.75);
+cymNoise.amplitude(.75);
+
+// CYMBAL MIXER
+cymMixer.gain(0, 0.5);
+cymMixer.gain(1, 0.5);
+cymMixer.gain(2, 0.5);
+cymMixer.gain(3 , 0.5);
+
+// CYMBAL ENVELOPE
+cymEnv.attack(0);
+cymEnv.hold(5);
+cymEnv.delay(0);
+cymEnv.sustain(0);
+cymEnv.release(150);
+
+// CYMBAL Filter
+cymBP.resonance(0.7);
+cymLP.resonance(0.7);
+
+
 void setup() {
   Serial.begin(9600);
   AudioMemory(20);
