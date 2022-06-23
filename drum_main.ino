@@ -10,10 +10,10 @@ Bounce button0 = Bounce(33,15);
 
 // inputs
 #define pot1            A13 // EnvDecay
-#define pot2            A14 // Waveform 1 Freq
-#define pot3            A15 // Waveform 2 Freq
-#define pot4            A16 // BP Freq
-#define pot5            A17 // LP Freq
+#define pot2            A14 // Filter 1
+#define pot3            A15 // Filter 2
+#define pot4            A16 // Tone 1
+#define pot5            A17 // Tone 2
 
 // Audio Processing Nodes
 AudioSynthWaveform              hatPulse; //xy=90,715
@@ -86,7 +86,40 @@ AudioConnection        patchCord34(masterMixer, 0, i2s, 1);
 // Control Nodes (all control nodes (no inputs or outputs))
 AudioControlSGTL5000     sgtl5000_1;     //xy=110,175
 
+// Configure params
 
+//////////////////////////
+// BASS DRUM PARAMETERS //
+//////////////////////////
+
+//  BASS MIXER
+bassMixer.gain(0, 0.5);
+bassMixer.gain(1, 0.5);
+bassMixer.gain(2, 0.5);
+bassMixer.gain(3 , 0.5);
+
+// BASS SINE 1
+bassSine1.begin(WAVEFORM_SINE);
+bassSine1.amplitude(1.5);
+bassSine1.frequency(50);
+bassSine1.pulseWidth(.5);
+
+// BASS SINE 2
+bassSine2.begin(WAVEFORM_SINE);
+bassSine2.amplitude(1.5);
+bassSine2.frequency(50);
+bassSine2.pulseWidth(.5);
+
+// BASS ENV
+bassEnv.attack(0);
+bassEnv.hold(5);
+bassEnv.delay(0);
+bassEnv.sustain(0);
+bassEnv.release(70);
+
+// Filter Resonance
+bassBP.resonance(0.7);
+bassLP.resonance(0.7);
 
 void setup() {
   Serial.begin(9600);
