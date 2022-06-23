@@ -1,0 +1,551 @@
+{
+    "version": 1,
+    "settings": {
+        "main": {},
+        "arduino": {
+            "Board": {
+                "Platform": "",
+                "Board": "",
+                "Options": ""
+            }
+        },
+        "BiDirDataWebSocketBridge": {},
+        "workspaces": {},
+        "sidebar": {},
+        "palette": {},
+        "editor": {},
+        "devTest": {},
+        "IndexedDBfiles": {
+            "testFileNames": "testFile.txt"
+        },
+        "NodeDefGenerator": {},
+        "NodeDefManager": {},
+        "NodeHelpManager": {},
+        "OSC": {}
+    },
+    "workspaces": [
+        {
+            "type": "tab",
+            "id": "Main",
+            "label": "Main",
+            "nodes": [
+                {
+                    "id": "20220623T175740_448Z_35c8",
+                    "type": "AudioSynthWaveform",
+                    "name": "hatPulse",
+                    "comment": " waveform1.begin(WAVEFORM_PULSE);   waveform1.frequency(30000);   waveform1.amplitude(.75);   noise1.amplitude(.75);",
+                    "arraySize": "",
+                    "x": 90,
+                    "y": 715,
+                    "z": "Main",
+                    "bgColor": "#E6E0F8",
+                    "wires": [
+                        [
+                            "20220623T175740_449Z_4bd3:0"
+                        ]
+                    ]
+                },
+                {
+                    "id": "20220623T180214_238Z_7df3",
+                    "type": "AudioSynthWaveform",
+                    "name": "cymPulse",
+                    "comment": " waveform1.begin(WAVEFORM_PULSE);   waveform1.frequency(30000);   waveform1.amplitude(.75);   noise1.amplitude(.75);",
+                    "arraySize": "",
+                    "x": 90,
+                    "y": 925,
+                    "z": "Main",
+                    "bgColor": "#E6E0F8",
+                    "wires": [
+                        [
+                            "20220623T180214_238Z_3a38:0"
+                        ]
+                    ]
+                },
+                {
+                    "id": "20220623T175023_776Z_3f8c",
+                    "type": "AudioControlSGTL5000",
+                    "name": "sgtl5000_1",
+                    "x": 110,
+                    "y": 175,
+                    "z": "Main",
+                    "bgColor": "#E6E0F8",
+                    "wires": []
+                },
+                {
+                    "id": "20220623T175357_051Z_f09a",
+                    "type": "AudioSynthWaveform",
+                    "name": "bassSine1",
+                    "comment": "  waveform1.begin(WAVEFORM_SINE);   waveform1.amplitude(1.5);   waveform1.frequency(50);   waveform1.pulseWidth(.5);",
+                    "arraySize": "",
+                    "x": 125,
+                    "y": 240,
+                    "z": "Main",
+                    "bgColor": "#E6E0F8",
+                    "wires": [
+                        [
+                            "20220623T175357_051Z_2978:0"
+                        ]
+                    ]
+                },
+                {
+                    "id": "20220623T175357_051Z_ef1a",
+                    "type": "AudioSynthWaveform",
+                    "name": "bassSine2",
+                    "comment": "  waveform2.begin(WAVEFORM_SINE);   waveform2.amplitude(1.5);   waveform2.frequency(50);   waveform2.pulseWidth(.5);",
+                    "arraySize": "",
+                    "x": 120,
+                    "y": 310,
+                    "z": "Main",
+                    "bgColor": "#E6E0F8",
+                    "wires": [
+                        [
+                            "20220623T175357_052Z_1f8f:0",
+                            "20220623T175357_051Z_68fc:0"
+                        ]
+                    ]
+                },
+                {
+                    "id": "20220623T175023_776Z_5542",
+                    "type": "AudioSynthNoiseWhite",
+                    "name": "snareNoise",
+                    "comment": "amplitude(.75)",
+                    "arraySize": "",
+                    "x": 120,
+                    "y": 455,
+                    "z": "Main",
+                    "bgColor": "#E6E0F8",
+                    "wires": [
+                        [
+                            "20220623T175023_776Z_9233:0"
+                        ]
+                    ]
+                },
+                {
+                    "id": "20220623T175023_776Z_3bc3",
+                    "type": "AudioSynthWaveform",
+                    "name": "snareSaw",
+                    "comment": "  waveform1.begin(WAVEFORM_SAWTOOTH_REVERSE);   waveform1.frequency(180);   waveform1.amplitude(.75);",
+                    "arraySize": "",
+                    "x": 120,
+                    "y": 615,
+                    "z": "Main",
+                    "bgColor": "#E6E0F8",
+                    "wires": [
+                        [
+                            "20220623T175023_776Z_e02e:1",
+                            "20220623T175023_776Z_9541:0"
+                        ]
+                    ]
+                },
+                {
+                    "id": "20220623T175740_448Z_b077",
+                    "type": "AudioSynthNoiseWhite",
+                    "name": "hatNoise",
+                    "comment": "",
+                    "arraySize": "",
+                    "x": 100,
+                    "y": 825,
+                    "z": "Main",
+                    "bgColor": "#E6E0F8",
+                    "wires": [
+                        [
+                            "20220623T175740_449Z_4bd3:1"
+                        ]
+                    ]
+                },
+                {
+                    "id": "20220623T180214_238Z_72f8",
+                    "type": "AudioSynthNoiseWhite",
+                    "name": "cymNoise",
+                    "comment": "",
+                    "arraySize": "",
+                    "x": 100,
+                    "y": 1035,
+                    "z": "Main",
+                    "bgColor": "#E6E0F8",
+                    "wires": [
+                        [
+                            "20220623T180214_238Z_3a38:1"
+                        ]
+                    ]
+                },
+                {
+                    "id": "20220623T175357_051Z_2978",
+                    "type": "AudioFilterStateVariable",
+                    "name": "bassBP",
+                    "comment": "",
+                    "arraySize": "",
+                    "x": 290,
+                    "y": 245,
+                    "z": "Main",
+                    "bgColor": "#E6E0F8",
+                    "wires": [
+                        [],
+                        [
+                            "20220623T175357_052Z_e1ef:1"
+                        ],
+                        []
+                    ]
+                },
+                {
+                    "id": "20220623T175357_051Z_68fc",
+                    "type": "AudioFilterStateVariable",
+                    "name": "bassLP",
+                    "comment": "",
+                    "arraySize": "",
+                    "x": 295,
+                    "y": 315,
+                    "z": "Main",
+                    "bgColor": "#E6E0F8",
+                    "wires": [
+                        [],
+                        [],
+                        [
+                            "20220623T175357_052Z_e1ef:2"
+                        ]
+                    ]
+                },
+                {
+                    "id": "20220623T175357_052Z_1f8f",
+                    "type": "AudioEffectEnvelope",
+                    "name": "bassEnv",
+                    "comment": "  envelope1.attack(0);   envelope1.hold(5);   envelope1.delay(0);   envelope1.sustain(0);   envelope1.release(70);",
+                    "arraySize": "",
+                    "x": 295,
+                    "y": 380,
+                    "z": "Main",
+                    "bgColor": "#E6E0F8",
+                    "wires": [
+                        [
+                            "20220623T175357_052Z_ca9b:1"
+                        ]
+                    ]
+                },
+                {
+                    "id": "20220623T175023_776Z_9233",
+                    "type": "AudioFilterStateVariable",
+                    "name": "snareBP",
+                    "comment": "resonance(0.7);",
+                    "arraySize": "",
+                    "x": 265,
+                    "y": 465,
+                    "z": "Main",
+                    "bgColor": "#E6E0F8",
+                    "wires": [
+                        [],
+                        [
+                            "20220623T175023_776Z_aa0a:1"
+                        ],
+                        []
+                    ]
+                },
+                {
+                    "id": "20220623T175023_776Z_e02e",
+                    "type": "AudioFilterStateVariable",
+                    "name": "snareLP",
+                    "comment": "resonance(0.7);",
+                    "arraySize": "",
+                    "x": 265,
+                    "y": 530,
+                    "z": "Main",
+                    "bgColor": "#E6E0F8",
+                    "wires": [
+                        [],
+                        [],
+                        [
+                            "20220623T175023_776Z_aa0a:2"
+                        ]
+                    ]
+                },
+                {
+                    "id": "20220623T175740_449Z_4bd3",
+                    "type": "AudioEffectMultiply",
+                    "name": "hatVCA",
+                    "comment": "",
+                    "arraySize": "",
+                    "x": 245,
+                    "y": 765,
+                    "z": "Main",
+                    "bgColor": "#E6E0F8",
+                    "wires": [
+                        [
+                            "20220623T175740_449Z_38b6:0",
+                            "20220623T175740_449Z_8c15:1"
+                        ]
+                    ]
+                },
+                {
+                    "id": "20220623T180214_238Z_3a38",
+                    "type": "AudioEffectMultiply",
+                    "name": "cymVCA",
+                    "comment": "",
+                    "arraySize": "",
+                    "x": 245,
+                    "y": 975,
+                    "z": "Main",
+                    "bgColor": "#E6E0F8",
+                    "wires": [
+                        [
+                            "20220623T180214_238Z_95ac:0",
+                            "20220623T180214_238Z_c55b:1"
+                        ]
+                    ]
+                },
+                {
+                    "id": "20220623T175357_052Z_e1ef",
+                    "type": "AudioMixer4",
+                    "name": "bassMixer",
+                    "comment": "",
+                    "arraySize": "",
+                    "x": 430,
+                    "y": 280,
+                    "z": "Main",
+                    "bgColor": "#E6E0F8",
+                    "wires": [
+                        [
+                            "20220623T175357_052Z_ca9b:0"
+                        ]
+                    ]
+                },
+                {
+                    "id": "20220623T175023_776Z_aa0a",
+                    "type": "AudioMixer4",
+                    "name": "snareMixer",
+                    "comment": ".5 gain all",
+                    "arraySize": "",
+                    "x": 410,
+                    "y": 490,
+                    "z": "Main",
+                    "bgColor": "#E6E0F8",
+                    "wires": [
+                        [
+                            "20220623T175023_776Z_806e:0"
+                        ]
+                    ]
+                },
+                {
+                    "id": "20220623T175023_776Z_9541",
+                    "type": "AudioEffectEnvelope",
+                    "name": "snareEnv",
+                    "comment": "  envelope1.attack(0);   envelope1.hold(5);   envelope1.delay(0);   envelope1.sustain(0);   envelope1.release(70);",
+                    "arraySize": "",
+                    "x": 405,
+                    "y": 615,
+                    "z": "Main",
+                    "bgColor": "#E6E0F8",
+                    "wires": [
+                        [
+                            "20220623T175023_776Z_806e:1"
+                        ]
+                    ]
+                },
+                {
+                    "id": "20220623T175740_449Z_38b6",
+                    "type": "AudioFilterStateVariable",
+                    "name": "hatBP",
+                    "comment": "",
+                    "arraySize": "",
+                    "x": 400,
+                    "y": 720,
+                    "z": "Main",
+                    "bgColor": "#E6E0F8",
+                    "wires": [
+                        [],
+                        [
+                            "20220623T175740_449Z_816a:1"
+                        ],
+                        []
+                    ]
+                },
+                {
+                    "id": "20220623T175740_449Z_8c15",
+                    "type": "AudioFilterStateVariable",
+                    "name": "hatLP",
+                    "comment": "",
+                    "arraySize": "",
+                    "x": 400,
+                    "y": 805,
+                    "z": "Main",
+                    "bgColor": "#E6E0F8",
+                    "wires": [
+                        [
+                            "20220623T175740_449Z_816a:2"
+                        ],
+                        [],
+                        []
+                    ]
+                },
+                {
+                    "id": "20220623T180214_238Z_95ac",
+                    "type": "AudioFilterStateVariable",
+                    "name": "cymBP",
+                    "comment": "",
+                    "arraySize": "",
+                    "x": 400,
+                    "y": 930,
+                    "z": "Main",
+                    "bgColor": "#E6E0F8",
+                    "wires": [
+                        [],
+                        [
+                            "20220623T180214_238Z_e4b9:1"
+                        ],
+                        []
+                    ]
+                },
+                {
+                    "id": "20220623T180214_238Z_c55b",
+                    "type": "AudioFilterStateVariable",
+                    "name": "cymLP",
+                    "comment": "",
+                    "arraySize": "",
+                    "x": 400,
+                    "y": 1015,
+                    "z": "Main",
+                    "bgColor": "#E6E0F8",
+                    "wires": [
+                        [
+                            "20220623T180214_238Z_e4b9:2"
+                        ],
+                        [],
+                        []
+                    ]
+                },
+                {
+                    "id": "20220623T175740_449Z_816a",
+                    "type": "AudioMixer4",
+                    "name": "hatMixer",
+                    "comment": "",
+                    "arraySize": "",
+                    "x": 530,
+                    "y": 755,
+                    "z": "Main",
+                    "bgColor": "#E6E0F8",
+                    "wires": [
+                        [
+                            "20220623T175740_449Z_83a6:0"
+                        ]
+                    ]
+                },
+                {
+                    "id": "20220623T180214_238Z_e4b9",
+                    "type": "AudioMixer4",
+                    "name": "cymMixer",
+                    "comment": "",
+                    "arraySize": "",
+                    "x": 530,
+                    "y": 965,
+                    "z": "Main",
+                    "bgColor": "#E6E0F8",
+                    "wires": [
+                        [
+                            "20220623T180214_238Z_779d:0"
+                        ]
+                    ]
+                },
+                {
+                    "id": "20220623T175357_052Z_ca9b",
+                    "type": "AudioEffectMultiply",
+                    "name": "bassVCA",
+                    "comment": "",
+                    "arraySize": "",
+                    "x": 675,
+                    "y": 375,
+                    "z": "Main",
+                    "bgColor": "#E6E0F8",
+                    "wires": [
+                        [
+                            "20220623T180038_029Z_5ef0:0"
+                        ]
+                    ]
+                },
+                {
+                    "id": "20220623T175023_776Z_806e",
+                    "type": "AudioEffectMultiply",
+                    "name": "snareVCA",
+                    "comment": "",
+                    "arraySize": "",
+                    "x": 685,
+                    "y": 540,
+                    "z": "Main",
+                    "bgColor": "#E6E0F8",
+                    "wires": [
+                        [
+                            "20220623T180038_029Z_5ef0:1"
+                        ]
+                    ]
+                },
+                {
+                    "id": "20220623T175740_449Z_83a6",
+                    "type": "AudioEffectEnvelope",
+                    "name": "hatEnv",
+                    "comment": "",
+                    "arraySize": "",
+                    "x": 680,
+                    "y": 755,
+                    "z": "Main",
+                    "bgColor": "#E6E0F8",
+                    "wires": [
+                        [
+                            "20220623T180038_029Z_5ef0:2"
+                        ]
+                    ]
+                },
+                {
+                    "id": "20220623T180214_238Z_779d",
+                    "type": "AudioEffectEnvelope",
+                    "name": "cymEnv",
+                    "comment": "",
+                    "arraySize": "",
+                    "x": 680,
+                    "y": 965,
+                    "z": "Main",
+                    "bgColor": "#E6E0F8",
+                    "wires": [
+                        [
+                            "20220623T180038_029Z_5ef0:3"
+                        ]
+                    ]
+                },
+                {
+                    "id": "20220623T180038_029Z_5ef0",
+                    "type": "AudioMixer4",
+                    "name": "masterMixer",
+                    "comment": "",
+                    "arraySize": 1,
+                    "x": 909,
+                    "y": 561,
+                    "z": "Main",
+                    "bgColor": "#E6E0F8",
+                    "wires": [
+                        [
+                            "20220623T180357_388Z_9799:0",
+                            "20220623T180357_388Z_9799:1"
+                        ]
+                    ]
+                },
+                {
+                    "id": "20220623T180357_388Z_9799",
+                    "type": "AudioOutputI2S",
+                    "name": "i2s",
+                    "comment": "",
+                    "x": 1070,
+                    "y": 560,
+                    "z": "Main",
+                    "bgColor": "#E6E0F8",
+                    "wires": []
+                }
+            ],
+            "links": [],
+            "export": true,
+            "isMain": false,
+            "mainNameType": "tabName",
+            "mainNameExt": ".ino",
+            "isAudioMain": false,
+            "generateCppDestructor": false,
+            "extraClassDeclarations": "",
+            "settings": {}
+        }
+    ],
+    "nodeAddons": {}
+}
