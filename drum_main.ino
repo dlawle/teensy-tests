@@ -89,33 +89,33 @@ AudioControlSGTL5000     sgtl5000_1;     //xy=91,35
 //////////////////////////
 
 //  BASS MIXER
-bassMixer.gain(0, 0.5);
-bassMixer.gain(1, 0.5);
-bassMixer.gain(2, 0.5);
-bassMixer.gain(3 , 0.5);
+mixer1.gain(0, 0.5);
+mixer1.gain(1, 0.5);
+mixer1.gain(2, 0.5);
+mixer1.gain(3 , 0.5);
 
 // BASS SINE 1
-bassSine1.begin(WAVEFORM_SINE);
-bassSine1.amplitude(1.5);
-bassSine1.frequency(50);
-bassSine1.pulseWidth(.5);
+wavetable1.begin(WAVEFORM_SINE);
+wavetable1.amplitude(1.5);
+wavetable1.frequency(50);
+wavetable1.pulseWidth(.5);
 
 // BASS SINE 2
-bassSine2.begin(WAVEFORM_SINE);
-bassSine2.amplitude(1.5);
-bassSine2.frequency(50);
-bassSine2.pulseWidth(.5);
+wavetable2.begin(WAVEFORM_SINE);
+wavetable2.amplitude(1.5);
+wavetable2.frequency(50);
+wavetable2.pulseWidth(.5);
 
 // BASS ENV
-bassEnv.attack(0);
-bassEnv.hold(5);
-bassEnv.delay(0);
-bassEnv.sustain(0);
-bassEnv.release(70);
+envelope1.attack(0);
+envelope1.hold(5);
+envelope1.delay(0);
+envelope1.sustain(0);
+envelope1.release(70);
 
 // Filter Resonance
-bassBP.resonance(0.7);
-bassLP.resonance(0.7);
+filter1.resonance(0.7);
+filter2.resonance(0.7);
 
 
 
@@ -124,54 +124,54 @@ bassLP.resonance(0.7);
 //////////////////////////
 
 // SNARE WAVEFORMS
-snareSaw.begin(WAVEFORM_SAWTOOTH_REVERSE);
-snareSaw.frequency(180);
-snareSaw.amplitude(.75);
-snareNoise.amplitude(.75);
+wavetable3.begin(WAVEFORM_SAWTOOTH_REVERSE);
+wavetable3.frequency(180);
+wavetable3.amplitude(.75);
+noise1.amplitude(.75);
 
 // SNARE MIXER 
-snareMixer.gain(0, 0.5);
-snareMixer.gain(1, 0.5);
-snareMixer.gain(2, 0.5);
-snareMixer.gain(3 , 0.5);
+mixer2.gain(0, 0.5);
+mixer2.gain(1, 0.5);
+mixer2.gain(2, 0.5);
+mixer2.gain(3 , 0.5);
 
 // SNARE ENVELOPE
-snareEnv.attack(0);
-snareEnv.hold(5);
-snareEnv.delay(0);
-snareEnv.sustain(0);
-snareEnv.release(70);
+envelope2.attack(0);
+envelope2.hold(5);
+envelope2.delay(0);
+envelope2.sustain(0);
+envelope2.release(70);
 
 // SNARE FILTER
-snareBP.resonance(0.7);
-snareLP.resonance(0.7);
+filter3.resonance(0.7);
+filter4.resonance(0.7);
 
 //////////////////////////
 // "HIHAT" PARAMETERS   //
 //////////////////////////
 
 // HIHAT WAVEFORMS
-hatPulse.begin(WAVEFORM_PULSE);
-hatPulse.frequency(30000);
-hatPulse.amplitude(.75);
-hatNoise.amplitude(.75);
+wavetable4.begin(WAVEFORM_PULSE);
+wavetable4.frequency(30000);
+wavetable4.amplitude(.75);
+noise2.amplitude(.75);
 
 // HIHAT MIXER
-hatMixer.gain(0, 0.5);
-hatMixer.gain(1, 0.5);
-hatMixer.gain(2, 0.5);
-hatMixer.gain(3 , 0.5);
+mixer3.gain(0, 0.5);
+mixer3.gain(1, 0.5);
+mixer3.gain(2, 0.5);
+mixer3.gain(3 , 0.5);
 
 // HIHAT ENVELOPE
-hatEnv.attack(0);
-hatEnv.hold(5);
-hatEnv.delay(0);
-hatEnv.sustain(0);
-hatEnv.release(150);
+envelope3.attack(0);
+envelope3.hold(5);
+envelope3.delay(0);
+envelope3.sustain(0);
+envelope3.release(150);
 
 // HIHAT Filter
-hatBP.resonance(0.7);
-hatLP.resonance(0.7);
+filter5.resonance(0.7);
+filter6.resonance(0.7);
 
 
 //////////////////////////
@@ -179,27 +179,27 @@ hatLP.resonance(0.7);
 //////////////////////////
 
 // CYMBAL WAVEFORMS
-cymPulse.begin(WAVEFORM_PULSE);
-cymPulse.frequency(30000);
-cymPulse.amplitude(.75);
-cymNoise.amplitude(.75);
+wavetable5.begin(WAVEFORM_PULSE);
+wavetable5.frequency(30000);
+wavetable5.amplitude(.75);
+pink1.amplitude(.75);
 
 // CYMBAL MIXER
-cymMixer.gain(0, 0.5);
-cymMixer.gain(1, 0.5);
-cymMixer.gain(2, 0.5);
-cymMixer.gain(3 , 0.5);
+mixer4.gain(0, 0.5);
+mixer4.gain(1, 0.5);
+mixer4.gain(2, 0.5);
+mixer4.gain(3 , 0.5);
 
 // CYMBAL ENVELOPE
-cymEnv.attack(0);
-cymEnv.hold(5);
-cymEnv.delay(0);
-cymEnv.sustain(0);
-cymEnv.release(150);
+envelope4.attack(0);
+envelope4.hold(5);
+envelope4.delay(0);
+envelope4.sustain(0);
+envelope4.release(150);
 
 // CYMBAL Filter
-cymBP.resonance(0.7);
-cymLP.resonance(0.7);
+filter7.resonance(0.7);
+filter8.resonance(0.7);
 
 
 void setup() {
@@ -227,74 +227,72 @@ void loop() {
  float knob5 = (float)analogRead(pot5)/2;   // Tone 2 
 
  if (digitalRead(6) == LOW) {
-    bassEnv.decay(knob1);
-    bassBP.frequency(knob2);
-    bassLP.frequency(knob2);
-    bassSine1.frequency(knob4);
-    bassSine2.frequency(knob5);
+    envelope1.decay(knob1);
+    filter1.frequency(knob2);
+    filter2.frequency(knob2);
+    wavetable1.frequency(knob4);
+    wavetable2.frequency(knob5);
     if (button0.fallingEdge()) {
-    Serial.println("Sending Drum Trigger");
-    envelope1.noteOn();
-    timeout = 0;
+	    Serial.println("Sending Drum Trigger");
+	    envelope1.noteOn();
+	    timeout = 0;
     }
     if (button0.risingEdge()) {
-    bassEnv.noteOff();
-    Serial.println("Trigger Released, sending NoteOff");
-    Serial.println();
-    timeout = 0;
-      }
+	    envelope1.noteOff();
+	    Serial.println("Trigger Released, sending NoteOff");
+	    Serial.println();
+	    timeout = 0;
+}
  } else if (digitalRead(7) == LOW) {
-    snareEnv.decay(knob1);
-    snareBP.frequency(knob2);
-    snareLP.frequency(knob2);
-    snareSaw.frequency(knob4);
-    snareNoise.frequency(knob5); 
+    envelope2.decay(knob1);
+    filter3.frequency(knob2);
+    filter4.frequency(knob2);
+    wavetable3.frequency(knob4);
+    noise1.amplitude(knob5); 
     if (button0.fallingEdge()) {
-    Serial.println("Sending Snare Trigger");
-    snareEnv.noteOn();
-    timeout = 0;
+	    Serial.println("Sending Snare Trigger");
+	    envelope2.noteOn();
+	    timeout = 0;
     }
     if (button0.risingEdge()) {
-    snareEnv.noteOff();
-    Serial.println("Trigger Released, sending NoteOff");
-    Serial.println();
-    timeout = 0;
-      }
+	    envelope2.noteOff();
+	    Serial.println("Trigger Released, sending NoteOff");
+	    Serial.println();
+	    timeout = 0;
+    }
  }else if (digitalRead(8) == LOW) {
-      hatEnv.decay(knob1);
-    hatBP.frequency(knob2);
-    hatLP.frequency(knob2);
-    hatPulse.frequency(knob4);
-    hatNoise.frequency(knob5); 
+    envelope3.decay(knob1);
+    filter5.frequency(knob2);
+    filter6.frequency(knob2);
+    wavetable4.frequency(knob4);
+    noise2.amplitude(knob5); 
     if (button0.fallingEdge()) {
-    Serial.println("Sending hat Trigger");
-    hatEnv.noteOn();
-    timeout = 0;
+	    Serial.println("Sending hat Trigger");
+	    envelope3.noteOn();
+	    timeout = 0;
     }
     if (button0.risingEdge()) {
-    hatEnv.noteOff();
-    Serial.println("Trigger Released, sending NoteOff");
-    Serial.println();
-    timeout = 0;
-      }
+	    envelope3.noteOff();
+	    Serial.println("Trigger Released, sending NoteOff");
+	    Serial.println();
+	    timeout = 0;
+    }
  }else if (digitalRead(9) == LOW) {
-          cymEnv.decay(knob1);
-    cymBP.frequency(knob2);
-    cymLP.frequency(knob2);
-    cymPulse.frequency(knob4);
-    cymNoise.frequency(knob5); 
+	envelope4.decay(knob1);
+    filter7.frequency(knob2);
+    filter8.frequency(knob2);
+    wavetable5.frequency(knob4);
+    pink1.amplitude(knob5); 
     if (button0.fallingEdge()) {
-    Serial.println("Sending cymble Trigger");
-    cymEnv.noteOn();
-    timeout = 0;
+	    Serial.println("Sending cymble Trigger");
+	    envelope4.noteOn();
+	    timeout = 0;
     }
     if (button0.risingEdge()) {
-    cymEnv.noteOff();
-    Serial.println("Trigger Released, sending NoteOff");
-    Serial.println();
-    timeout = 0;
-      }
- }
-
-
+	    envelope4.noteOff();
+	    Serial.println("Trigger Released, sending NoteOff");
+	    Serial.println();
+	    timeout = 0;
+    }
+  }
 }
