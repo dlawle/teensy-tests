@@ -58,11 +58,11 @@ void setup() {
   snareNoise.amplitude(1);
 
   snareContour.frequency(50);
-  snareContour.amplitude(1.5);
-  snareAmp.gain(1);
+  snareContour.amplitude(0.5);
+  snareAmp.gain(0.5);
 
   snareLP.resonance(1);
-  snareLP.frequency(300);
+  snareLP.frequency(1500);
 
   snareMix.gain(0, 0.5);
   snareMix.gain(1, 0.5);
@@ -77,19 +77,28 @@ void setup() {
 
 }
 
+elapsedMillis timeout = 0;
+
 void loop() {
   float knob1 = (float)analogRead(pot1)/2;   // EnvDecay
   float knob2 = (float)analogRead(pot2)/4;   // Waveform 1 Freq
   
-    button0.update();
-    if (button0.fallingEdge()) {
-      snareEnv.noteOn();
-      timeout = 0;
-    }
-    
-    if (button0.risingEdge()) {
-      //envelope1.noteOff();
-      Serial.println("Button Released, sending NoteOff");
-      Serial.println();
-      timeout = 0;
+  snareEnv.decay(knob1);
+  snareTri.frequency(knob2);
+  snareSquare.frequency(knob2);
+  snareContour.frequency(knob2);
+  
+  button0.update();
+  if (button0.fallingEdge()) {
+    snareEnv.noteOn();
+    timeout = 0;
+  }
+  
+  if (button0.risingEdge()) {
+    //envelope1.noteOff();
+    Serial.println("Button Released, sending NoteOff");
+    Serial.println();
+    timeout = 0;
+}
+
 }
