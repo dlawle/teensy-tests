@@ -7,28 +7,35 @@
 
 Bounce button0 = Bounce(25,15);
 
+#include <Audio.h>
+#include <Wire.h>
+#include <SPI.h>
+#include <SD.h>
+#include <SerialFlash.h>
+
 // GUItool: begin automatically generated code
-AudioSynthWaveformSine   sine1;          //xy=106,404
-AudioSynthWaveform       waveform1;      //xy=108,595
-AudioSynthNoiseWhite     noise1;         //xy=111,296
-AudioFilterStateVariable filter2;        //xy=298,493
-AudioFilterStateVariable filter1;        //xy=302,356
-AudioMixer4              mixer1;         //xy=547,385
-AudioEffectEnvelope      envelope1;      //xy=639,625
-AudioEffectMultiply      multiply1;      //xy=813,384
-AudioOutputI2S           i2s2;           //xy=1019,385
-AudioConnection          patchCord1(sine1, 0, filter1, 1);
-AudioConnection          patchCord2(waveform1, 0, filter2, 1);
-AudioConnection          patchCord3(waveform1, envelope1);
-AudioConnection          patchCord4(noise1, 0, filter1, 0);
-AudioConnection          patchCord5(filter2, 2, mixer1, 2);
-AudioConnection          patchCord6(filter1, 1, mixer1, 1);
-AudioConnection          patchCord7(mixer1, 0, multiply1, 0);
-AudioConnection          patchCord8(envelope1, 0, multiply1, 1);
-AudioConnection          patchCord9(multiply1, 0, i2s2, 0);
-AudioConnection          patchCord10(multiply1, 0, i2s2, 1);
-AudioControlSGTL5000     sgtl5000_1;     //xy=102,222
+AudioSynthWaveform       snareSquare;      //xy=127,180
+AudioSynthWaveform       snareTri;      //xy=128,231
+AudioSynthNoiseWhite     snareNoise;         //xy=128,275
+AudioMixer4              snareMix;         //xy=280,221
+AudioSynthWaveformSine   snareContour;          //xy=287,130
+AudioAmplifier           snareAmp;           //xy=410,70
+AudioFilterStateVariable snareLP;        //xy=427,224
+AudioEffectMultiply      snareVCA;      //xy=593,223
+AudioOutputI2S           i2s1;           //xy=759,222
+AudioConnection          patchCord1(snareSquare, 0, snareMix, 1);
+AudioConnection          patchCord2(snareTri, 0, snareMix, 2);
+AudioConnection          patchCord3(snareNoise, 0, snareMix, 3);
+AudioConnection          patchCord4(snareMix, 0, snareLP, 0);
+AudioConnection          patchCord5(snareContour, snareAmp);
+AudioConnection          patchCord6(snareAmp, 0, snareLP, 1);
+AudioConnection          patchCord7(snareAmp, 0, snareVCA, 0);
+AudioConnection          patchCord8(snareLP, 2, snareVCA, 1);
+AudioConnection          patchCord9(snareVCA, 0, i2s1, 0);
+AudioConnection          patchCord10(snareVCA, 0, i2s1, 1);
+AudioControlSGTL5000     sgtl5000_1;     //xy=132,73
 // GUItool: end automatically generated code
+
 
 // inputs
 #define pot1            A15 // EnvDecay
