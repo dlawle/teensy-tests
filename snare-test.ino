@@ -10,11 +10,6 @@ Bounce button0 = Bounce(31,15);
 // inputs
 #define pot1            A10 // EnvDecay
 #define pot2            A11 // Waveform 1 Freq
-#include <Audio.h>
-#include <Wire.h>
-#include <SPI.h>
-#include <SD.h>
-#include <SerialFlash.h>
 
 // GUItool: begin automatically generated code
 AudioSynthWaveform       snareSquare;      //xy=127,180
@@ -50,6 +45,36 @@ void setup() {
   
   // Pins
   pinMode(31, INPUT_PULLUP);
+
+  // Snare 
+  snareSquare.begin(WAVEFORM_SQUARE);
+  snareSquare.frequency(50);
+  snareSquare.amplitude(1.5);
+
+  snareTri.begin(WAVEFORM_TRIANGLE);
+  snareTri.frequency(50);
+  snareTri.amplitude(1.5);
+
+  snareNoise.amplitude(1);
+
+  snareContour.frequency(50);
+  snareContour.amplitude(1.5);
+  snareAmp.gain(1);
+
+  snareLP.resonance(1);
+  snareLP.frequency(300);
+
+  snareMix.gain(0, 0.5);
+  snareMix.gain(1, 0.5);
+  snareMix.gain(2, 0.5);
+  snareMix.gain(3, 0.5);
+
+  snareEnv.attack(0);
+  snareEnv.hold(5);
+  snareEnv.delay(0);
+  snareEnv.sustain(0);
+  snareEnv.release(70);
+
 }
 
 void loop() {
@@ -58,7 +83,7 @@ void loop() {
   
     button0.update();
     if (button0.fallingEdge()) {
-      envelope1.noteOn();
+      snareEnv.noteOn();
       timeout = 0;
     }
     
