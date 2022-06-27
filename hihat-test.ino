@@ -3,6 +3,7 @@
 #include <SPI.h>
 #include <SD.h>
 #include <SerialFlash.h>
+#include <Bounce.h>
 
 Bounce button0 = Bounce(31,15);
 
@@ -11,30 +12,29 @@ Bounce button0 = Bounce(31,15);
 #define pot2            A11 // Waveform 1 Freq
 
 // GUItool: begin automatically generated code
-AudioSynthWaveform       hatPulseMod;      //xy=182,202
-AudioSynthWaveformModulated hatPulse;   //xy=352,201
-AudioFilterStateVariable hatHP;        //xy=490,235
-AudioFilterStateVariable hatBP;        //xy=492,181
-AudioEffectEnvelope      hatBPEnv;      //xy=618,187
-AudioEffectEnvelope      hatHPEnv;      //xy=618,222
-AudioAmplifier           hatHPAmp; //xy=755,222
-AudioAmplifier           hatBPAmp;           //xy=756,187
-AudioMixer4              hatMixer;         //xy=893,204
-AudioEffectEnvelope      hatEnv;      //xy=1026,204
-AudioOutputI2S           i2s1;           //xy=1161,206
-AudioConnection          patchCord1(hatPulseMod, 0, hatPulse, 0);
-AudioConnection          patchCord2(hatPulseMod, 0, hatPulse, 1);
-AudioConnection          patchCord3(hatPulse, 0, hatBP, 0);
-AudioConnection          patchCord4(hatPulse, 0, hatHP, 0);
-AudioConnection          patchCord5(hatHP, 0, hatHPEnv, 0);
-AudioConnection          patchCord6(hatBP, 1, hatBPEnv, 0);
-AudioConnection          patchCord7(hatBPEnv, hatBPAmp);
-AudioConnection          patchCord8(hatHPEnv, hatHPAmp);
-AudioConnection          patchCord9(hatHPAmp, 0, hatMixer, 2);
-AudioConnection          patchCord10(hatBPAmp, 0, hatMixer, 1);
-AudioConnection          patchCord11(hatMixer, hatEnv);
-AudioConnection          patchCord12(hatEnv, 0, i2s1, 0);
-AudioConnection          patchCord13(hatEnv, 0, i2s1, 1);
+AudioSynthWaveformSineModulated HHSineMod1;     //xy=111,284
+AudioSynthWaveformSineModulated HHSineMod2;     //xy=135,336
+AudioEffectEnvelope      HHModEnv;       //xy=289,334
+AudioSynthNoiseWhite     HHNoise;        //xy=364,444
+AudioSynthWaveformSineModulated HHSineCarrier;  //xy=448,334
+AudioEffectEnvelope      HHModAMpEnv;    //xy=497,382
+AudioEffectEnvelope      HHnoiseEnv;     //xy=508,444
+AudioMixer4              HHMixer;        //xy=674,455
+AudioFilterStateVariable HHfilter;       //xy=840,404
+AudioEffectEnvelope      HHAmpEnv;       //xy=1093,436
+AudioOutputI2S           i2s1;           //xy=1267,436
+AudioConnection          patchCord1(HHSineMod1, HHSineMod2);
+AudioConnection          patchCord2(HHSineMod2, HHModEnv);
+AudioConnection          patchCord3(HHModEnv, HHSineCarrier);
+AudioConnection          patchCord4(HHNoise, HHnoiseEnv);
+AudioConnection          patchCord5(HHSineCarrier, HHModAMpEnv);
+AudioConnection          patchCord6(HHModAMpEnv, 0, HHMixer, 0);
+AudioConnection          patchCord7(HHModAMpEnv, 0, HHfilter, 1);
+AudioConnection          patchCord8(HHnoiseEnv, 0, HHMixer, 1);
+AudioConnection          patchCord9(HHMixer, 0, HHfilter, 0);
+AudioConnection          patchCord10(HHfilter, 2, HHAmpEnv, 0);
+AudioConnection          patchCord11(HHAmpEnv, 0, i2s1, 0);
+AudioConnection          patchCord12(HHAmpEnv, 0, i2s1, 1);
 AudioControlSGTL5000     sgtl5000_1;     //xy=306,129
 // GUItool: end automatically generated code
 
@@ -49,38 +49,37 @@ void setup() {
   // Pins
   pinMode(31, INPUT_PULLUP);
 
-  hatBPEnv.attack(1);
-  hatBPEnv.sustain(0);
-  hatBPEnv.decay(1);
-  hatBPEnv.release(1);
+  HHModAMpEnv.attack(1);
+  HHModAMpEnv.decay(50);
+  HHModAMpEnv.sustain(0);
+  HHModAMpEnv.release(10);
 
-  hatHPEnv.attack(1);
-  hatHPEnv.sustain(0);
-  hatHPEnv.decay(250);
-  hatHPEnv.release(1);
+  HHSineCarrier.amplitude(0.75);
+  HHSineCarrier.frequency(4000);
 
-  hatBPAmp.gain(0.5);
-  hatHPAmp.gain(0.5);
+  HHSineMod1.frequency(2500);
+  HHSineMod2.frequency(1250);
 
-  hatBP.frequency(2000);
-  hatHP.frequency(2000);
+  HHModEnv.attack(0);
+  HHModEnv.decay(50);
+  HHModEnv.sustain(0);
+  HHModEnv.release(10);
 
-  hatPulse.begin(WAVEFORM_PULSE);
-  hatPulse.frequency(2000);
+  HHfilter.frequency(2000);
+  HHNoise.amplitude(0.5);
 
-  hatPulseMod.begin(WAVEFORM_PULSE);
-  hatPulseMod.frequency(2000);
+  HHnoiseEnv.attack(2);
+  HHnoiseEnv.decay(250);
+  HHnoiseEnv.sustain(0);
+  HHnoiseEnv.release(10);
 
-  hatMixer.gain(0,0.5);
-  hatMixer.gain(1,0.5);
-  hatMixer.gain(2,0.5);
-  hatMixer.gain(3,0.5);
+  HHMixer.gain(0,0.3);
+  HHMixer.gain(1,0.5);
 
-  hatEnv.attack(1);
-  hatEnv.sustain(0);
-  hatEnv.decay(250);
-  hatEnv.release(1);
-
+  HHAmpEnv.attack(1);
+  HHAmpEnv.decay(300);
+  HHAmpEnv.sustain(0);
+  HHAmpEnv.release(10);
 }
 
 elapsedMillis timeout = 0;
@@ -89,13 +88,16 @@ void loop() {
   float knob1 = (float)analogRead(pot1)/2;   // EnvDecay
   float knob2 = (float)analogRead(pot2)/4;   // Waveform 1 Freq
   
-  hatEnv.decay(knob1);
-  hatPulse.frequency(knob2);
-  hatPulseMod.frequency(knob2);
+  HHAmpEnv.decay(knob1);
+  HHSineMod1.frequency(knob2);
+  HHSineMod2.frequency(knob2);
   
   button0.update();
   if (button0.fallingEdge()) {
-    hatEnv.noteOn();
+      HHnoiseEnv.noteOn();
+      HHAmpEnv.noteOn();
+      HHModAMpEnv.noteOn();
+      HHModEnv.noteOn();
     timeout = 0;
   }
   
