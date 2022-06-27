@@ -49,7 +49,38 @@ void setup() {
   // Pins
   pinMode(31, INPUT_PULLUP);
 
-  
+  hatBPEnv.attack(1);
+  hatBPEnv.sustain(0);
+  hatBPEnv.decay(1);
+  hatBPEnv.release(1);
+
+  hatHPEnv.attack(1);
+  hatHPEnv.sustain(0);
+  hatHPEnv.decay(250);
+  hatHPEnv.release(1);
+
+  hatBPAmp.gain(0.5);
+  hatHPAmp.gain(0.5);
+
+  hatBP.frequency(2000);
+  hatHP.frequency(2000);
+
+  hatPulse.begin(WAVEFORM_PULSE);
+  hatPulse.frequency(2000);
+
+  hatPulseMod.begin(WAVEFORM_PULSE);
+  hatPulseMod.frequency(2000);
+
+  hatMixer.gain(0,0.5);
+  hatMixer.gain(1,0.5);
+  hatMixer.gain(2,0.5);
+  hatMixer.gain(3,0.5);
+
+  hatEnv.attack(1);
+  hatEnv.sustain(0);
+  hatEnv.decay(250);
+  hatEnv.release(1);
+
 }
 
 elapsedMillis timeout = 0;
@@ -58,14 +89,13 @@ void loop() {
   float knob1 = (float)analogRead(pot1)/2;   // EnvDecay
   float knob2 = (float)analogRead(pot2)/4;   // Waveform 1 Freq
   
-  snareEnv.decay(knob1);
-  snareTri.frequency(knob2);
-  snareSquare.frequency(knob2);
-  snareContour.frequency(knob2);
+  hatEnv.decay(knob1);
+  hatPulse.frequency(knob2);
+  hatPulseMod.frequency(knob2);
   
   button0.update();
   if (button0.fallingEdge()) {
-    snareEnv.noteOn();
+    hatEnv.noteOn();
     timeout = 0;
   }
   
