@@ -89,7 +89,12 @@ AudioControlSGTL5000     sgtl5000_1;     //xy=541,243
 enum modes {d1, d2, d3, d4 };
 modes mode; //the current mode must be stored in a global variable
 
-const int buttonPin = 33;    // the number of the pushbutton pin
+const int buttonPin = 32;    // the number of the pushbutton pin
+int led1 = 31;
+int led2 = 30;
+int led3 = 29;
+int led4 = 28;
+
 const unsigned long debounceDelay = 50;    // the debounce time milliseconds; increase if the output flickers
 
 void setup() {
@@ -106,6 +111,10 @@ void setup() {
   pinMode(26, INPUT_PULLUP);
   pinMode(27, INPUT_PULLUP);
   pinMode(buttonPin, INPUT_PULLUP);
+  pinMode(led1, OUTPUT);
+  pinMode(led2, OUTPUT);
+  pinMode(led3, OUTPUT);
+  pinMode(led4, OUTPUT);
 
   mode = d1;
   
@@ -188,9 +197,16 @@ void setup() {
   HHAmpEnv.release(10);
 
   sgtl5000_1.enable();
+  sgtl5000_1.unmuteLineout();
   sgtl5000_1.volume(0.5);
+  sgt15000_1.lineOutLevel(0);
   
   AudioInterrupts();
+  
+  digitalWrite(led1, HIGH); 
+  digitalWrite(led2, LOW);
+  digitalWrite(led3, LOW);
+  digitalWrite(led4, LOW);
 
 }
 
@@ -240,19 +256,31 @@ void readButtons() {
         switch (mode) {
           case d1:
             mode = d2;
+            digitalWrite(led1, LOW);
+            digitalWrite(led2, HIGH);
             break;
           case d2:
             mode = d3;
+            digitalWrite(led2, LOW);
+            digitalWrite(led3, HIGH);
             break;
           case d3:
             mode = d4;
+            digitalWrite(led3, LOW);
+            digitalWrite(led4, HIGH);
             break;
           case d4:
             mode = d1;
+            digitalWrite(led4, LOW);
+            digitalWrite(led1, HIGH);
             break;
           default:
             //something random changed mode to an invalid value? Get it back on track.
             mode = d1;
+            digitalWrite(led2, LOW);
+            digitalWrite(led3, LOW);
+            digitalWrite(led4, LOW);
+            digitalWrite(led1, HIGH);
             break;
         }
       }
