@@ -12,6 +12,8 @@ Bounce gate1 = Bounce(24,5);
 Bounce gate2 = Bounce(25,5);
 Bounce gate3 = Bounce(26,5);
 Bounce gate4 = Bounce(27,5);
+Bounce gate4 = Bounce(33,5);
+
 
 // inputs
 #define pot1            A17 // frequency
@@ -86,10 +88,11 @@ AudioControlSGTL5000     sgtl5000_1;     //xy=541,243
 
 // https://forum.arduino.cc/t/use-a-single-knob-for-mutli-variables/311022/14 
 // handling multiple variables with single pot 
-enum modes {d1, d2, d3, d4 };
+enum modes {d1, d2, d3, d4};
 modes mode; //the current mode must be stored in a global variable
 
-const int buttonPin = 32;    // the number of the pushbutton pin
+const int switchPin = 32;    // the number of the pushbutton pin
+const int modPin = 33; 
 int led1 = 31;
 int led2 = 30;
 int led3 = 29;
@@ -110,13 +113,18 @@ void setup() {
   pinMode(25, INPUT_PULLUP);
   pinMode(26, INPUT_PULLUP);
   pinMode(27, INPUT_PULLUP);
-  pinMode(buttonPin, INPUT_PULLUP);
+  pinMode(switchPin, INPUT_PULLUP);
+  pinMode(modPin, INPUT_PULLUP);
   pinMode(led1, OUTPUT);
   pinMode(led2, OUTPUT);
   pinMode(led3, OUTPUT);
   pinMode(led4, OUTPUT);
 
   mode = d1;
+  digitalWrite(led2, LOW);
+  digitalWrite(led3, LOW);
+  digitalWrite(led4, LOW);
+  digitalWrite(led1, HIGH);
   
   AudioNoInterrupts();
 
@@ -130,6 +138,8 @@ void setup() {
   drum2.secondMix(0.0);
   drum2.pitchMod(1.0);
   
+
+  // from https://github.com/otem/Eurorack/tree/master/TeensyDrumV2
   //HiHat 1 ////////////////////////////////////
   HHModAMpEnv.attack(1);
   HHModAMpEnv.decay(50);
@@ -199,15 +209,8 @@ void setup() {
   sgtl5000_1.enable();
   sgtl5000_1.unmuteLineout();
   sgtl5000_1.volume(0.5);
-  sgt15000_1.lineOutLevel(0);
   
   AudioInterrupts();
-  
-  digitalWrite(led1, HIGH); 
-  digitalWrite(led2, LOW);
-  digitalWrite(led3, LOW);
-  digitalWrite(led4, LOW);
-
 }
 
 elapsedMillis timeout = 0;
@@ -234,7 +237,7 @@ void readButtons() {
   static unsigned long lastDebounceTime = 0;  // the last time the output pin was toggled
 
   // read the state of the switch into a local variable:
-  bool reading = digitalRead(buttonPin);
+  bool reading = digitalRead(switchPin);
 
   // If the switch changed, due to noise or pressing:
   if (reading != lastButtonState) {
@@ -300,31 +303,33 @@ void readPots() {
   float knob3 = (float)analogRead(pot3)/2;   // secondMix
   float knob4 = (float)analogRead(pot4)/2;   // pitchMod
 
-  switch (mode) {
-    case d1:
-      drum1.frequency(knob1);
-      drum1.length(knob2);
-      drum1.secondMix(knob3);
-      drum1.pitchMod(knob4);
-      break;
-    case d2:
-      drum2.frequency(knob1);
-      drum2.length(knob2);
-      drum2.secondMix(knob3);
-      drum2.pitchMod(knob4);
-      break;
-    case d3:
-      HHAmpEnv.decay(knob1);
-      HHModEnv.decay(knob2);
-      HHfilter.frequency(knob3);
-      HHModAMpEnv.decay(knob4);
-      break;
-    case d4:
-      HHAmpEnv1.decay(knob1);
-      HHModEnv1.decay(knob2);
-      HHfilter1.frequency(knob3);
-      HHModAMpEnv1.decay(knob4);
-      break;
+  if (modPin == HIGH) {
+    switch (mode) {
+      case d1:
+        drum1.frequency(knob1);
+        drum1.length(knob2);
+        drum1.secondMix(knob3);
+        drum1.pitchMod(knob4);
+        break;
+      case d2:
+        drum2.frequency(knob1);
+        drum2.length(knob2);
+        drum2.secondMix(knob3);
+        drum2.pitchMod(knob4);
+        break;
+      case d3:
+        HHAmpEnv.decay(knob1);
+        HHModEnv.decay(knob2);
+        HHfilter.frequency(knob3);
+        HHModAMpEnv.decay(knob4);
+        break;
+      case d4:
+        HHAmpEnv1.decay(knob1);
+        HHModEnv1.decay(knob2);
+        HHfilter1.frequency(knob3);
+        HHModAMpEnv1.decay(knob4);
+        break;
+    }
   }
 }
 
