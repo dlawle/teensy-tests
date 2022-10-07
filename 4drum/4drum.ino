@@ -72,11 +72,6 @@ int led4 = 28;
 
 const unsigned long debounceDelay = 50;    // the debounce time milliseconds; increase if the output flickers
 
-// another trick from otem rellik's teensydrum
-bool btnDown;
-
-
-
 void setup() {
   // put your setup code here, to run once:
 
@@ -245,9 +240,6 @@ void readPots() {
   //read in the potentiometer values.
   //Depending on the mode, this will update different global variables
 
-  // this trick should allow us to only execute when the button is held down
-  btnDown = !digitalRead(modPin);
-
   float knob1 = (float)analogRead(pot1)/2;   // frequency
   float knob2 = (float)analogRead(pot2)/2;   // length
   float knob3 = (float)analogRead(pot3)/2;   // secondMix
@@ -255,12 +247,10 @@ void readPots() {
 
     switch (mode) {
       case d1:
-        if(btnDown){
-          drum1.frequency(knob1);
-          drum1.length(knob2);
-          drum1.secondMix(knob3);
-          drum1.pitchMod(knob4);
-        }
+        drum1.frequency(knob1);
+        drum1.length(knob2);
+        drum1.secondMix(knob3);
+        drum1.pitchMod(knob4);
         break;
       case d2:
         drum2.frequency(knob1);
