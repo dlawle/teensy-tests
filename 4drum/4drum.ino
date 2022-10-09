@@ -63,12 +63,18 @@ AudioControlSGTL5000     sgtl5000_1;     //xy=1600,33
 // handling multiple variables with single pot 
 enum modes {d1, d2, d3, d4};
 modes mode; //the current mode must be stored in a global variable
-
 const int switchPin = 32;    // the number of the pushbutton pin
+
+// LEDs
 int led1 = 31;
 int led2 = 30;
 int led3 = 29;
 int led4 = 28;
+
+// MOD function
+const int modPin = 36;    // the number of the MOD pin
+const int modLed = 37;    // the number of the MOD LED
+bool mod = false;
 
 const unsigned long debounceDelay = 50;    // the debounce time milliseconds; increase if the output flickers
 
@@ -86,16 +92,16 @@ void setup() {
   pinMode(26, INPUT_PULLUP);
   pinMode(27, INPUT_PULLUP);
   pinMode(switchPin, INPUT_PULLUP);
+  pinMode(modPin, INPUT_PULLUP);
+  pinMode(modLed, OUTPUT);
   pinMode(led1, OUTPUT);
   pinMode(led2, OUTPUT);
   pinMode(led3, OUTPUT);
   pinMode(led4, OUTPUT);
+  mode = d1;
+  mod = false;
 
-//  mode = d1;
-//  digitalWrite(led2, LOW);
-//  digitalWrite(led3, LOW);
-//  digitalWrite(led4, LOW);
-//  digitalWrite(led1, HIGH);
+  starupCheese();
   
   AudioNoInterrupts();
 
@@ -159,15 +165,16 @@ void setup() {
 elapsedMillis timeout = 0;
 
 void loop() {
+    modManager();
     readButtons();
     readPots();
     playDrums();
     
-    Serial.print("Diagnostics: ");
-    Serial.print(AudioProcessorUsageMax());
-    Serial.print(" ");
-    Serial.println(AudioMemoryUsageMax());
-    AudioProcessorUsageMaxReset();
+//    Serial.print("Diagnostics: ");
+//    Serial.print(AudioProcessorUsageMax());
+//    Serial.print(" ");
+//    Serial.println(AudioMemoryUsageMax());
+//    AudioProcessorUsageMaxReset();
 }
 
 void readButtons() {
@@ -300,4 +307,77 @@ void playDrums() {
       HHModEnv.noteOn();
     timeout = 0;
   }
+}
+
+void starupCheese() {
+// while this is a bit cheesy, it does help us know if all LEDs are functioning
+  digitalWrite(led1, HIGH);
+  delay(300);
+  digitalWrite(led2, HIGH);
+  delay(300);
+  digitalWrite(led3, HIGH);
+  delay(300);
+  digitalWrite(led4, HIGH);
+  delay(1000);
+  digitalWrite(led1, LOW);
+  digitalWrite(led2, LOW);
+  digitalWrite(led3, LOW);
+  digitalWrite(led4, LOW);
+  delay(500);
+  digitalWrite(led1, HIGH);
+  digitalWrite(led2, HIGH);
+  digitalWrite(led3, HIGH);
+  digitalWrite(led4, HIGH);
+  digitalWrite(led4, HIGH);
+  delay(500);
+  digitalWrite(led1, LOW);
+  digitalWrite(led2, LOW);
+  digitalWrite(led3, LOW);
+  digitalWrite(led4, LOW);
+  delay(500);
+  digitalWrite(led1, HIGH);
+}
+
+void modManager() {
+   //read the button(s) in and change modes accordingly
+  //currently this example only shows one button
+  
+  //store some static variables that we need to remember over the long term
+  static bool modLastButtonState = LOW;   // the previous reading from the input pin
+  static bool modButtonState = HIGH;     // the current state of the button
+  static unsigned long modLastDebounceTime = 0;  // the last time the output pin was toggled
+
+  // read the state of the switch into a local variable:
+  bool modReading = digitalRead(modPin);
+
+  // If the switch changed, due to noise or pressing:
+  if (modReading != modLastButtonState) {
+    // reset the debouncing timer
+    modLastDebounceTime = millis();
+  }
+
+  if ((millis() - modLastDebounceTime) > debounceDelay) {
+    // whatever the reading is at, it's been there for longer
+    // than the debounce delay, so take it as the actual current state:
+
+    // if the button state has changed:
+    if (modReading != modButtonState) {
+      modButtonState = modReading;
+
+      //Only change mode if the new button state is LOW (pressed)
+      //depending on which mode we are in, we may jump to a different one
+    if (modButtonState == LOW) {
+        mod = true;
+        digitalWrite(modLed, HIGH);
+        Serial.println("expecting mod high.");
+        Serial.println(mod);
+    } else {
+        mod = false;
+        digitalWrite(modLed, LOW);
+        Serial.println("expecting mod low.");
+        Serial.println(mod);    }
+      }
+    }
+  // save the button reading
+  modLastButtonState = modReading;
 }
