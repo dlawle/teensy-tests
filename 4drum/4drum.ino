@@ -13,6 +13,7 @@ Bounce gate2 = Bounce(25,5);
 Bounce gate3 = Bounce(26,5);
 Bounce gate4 = Bounce(27,5);
 
+
 // inputs
 #define pot1            A17 // frequency
 #define pot2            A16 // length
@@ -64,7 +65,6 @@ enum modes {d1, d2, d3, d4};
 modes mode; //the current mode must be stored in a global variable
 
 const int switchPin = 32;    // the number of the pushbutton pin
-const int modPin = 33; 
 int led1 = 31;
 int led2 = 30;
 int led3 = 29;
@@ -78,7 +78,7 @@ void setup() {
   Serial.begin(115200);
 
   // audio library init
-  AudioMemory(20);
+  AudioMemory(40);
   
   // Pins
   pinMode(24, INPUT_PULLUP);
@@ -86,17 +86,16 @@ void setup() {
   pinMode(26, INPUT_PULLUP);
   pinMode(27, INPUT_PULLUP);
   pinMode(switchPin, INPUT_PULLUP);
-  pinMode(modPin, INPUT_PULLUP);
   pinMode(led1, OUTPUT);
   pinMode(led2, OUTPUT);
   pinMode(led3, OUTPUT);
   pinMode(led4, OUTPUT);
 
-  mode = d1;
-  digitalWrite(led2, LOW);
-  digitalWrite(led3, LOW);
-  digitalWrite(led4, LOW);
-  digitalWrite(led1, HIGH);
+//  mode = d1;
+//  digitalWrite(led2, LOW);
+//  digitalWrite(led3, LOW);
+//  digitalWrite(led4, LOW);
+//  digitalWrite(led1, HIGH);
   
   AudioNoInterrupts();
 
@@ -199,6 +198,7 @@ void readButtons() {
 
       //Only change mode if the new button state is LOW (pressed)
       //depending on which mode we are in, we may jump to a different one
+    if (buttonState == LOW) {
       switch (mode) {
         case d1:
           mode = d2;
@@ -229,6 +229,7 @@ void readButtons() {
           digitalWrite(led1, HIGH);
           break;
         }
+      }
     }
   }
 
@@ -245,34 +246,33 @@ void readPots() {
   float knob3 = (float)analogRead(pot3)/2;   // secondMix
   float knob4 = (float)analogRead(pot4)/2;   // pitchMod
 
-    switch (mode) {
-      case d1:
-        drum1.frequency(knob1);
-        drum1.length(knob2);
-        drum1.secondMix(knob3);
-        drum1.pitchMod(knob4);
-        break;
-      case d2:
-        drum2.frequency(knob1);
-        drum2.length(knob2);
-        drum2.secondMix(knob3);
-        drum2.pitchMod(knob4);
-        break;
-      case d3:
-        drum3.frequency(knob1);
-        drum3.length(knob2);
-        drum3.secondMix(knob3);
-        drum3.pitchMod(knob4);
-        break;
-      case d4:
-        HHAmpEnv.decay(knob1);
-        HHModEnv.decay(knob2);
-        HHfilter.frequency(knob3);
-        HHModAMpEnv.decay(knob4);
-        break;
+  switch (mode) {
+    case d1:
+      drum1.frequency(knob1);
+      drum1.length(knob2);
+      drum1.secondMix(knob3);
+      drum1.pitchMod(knob4);
+      break;
+    case d2:
+      drum2.frequency(knob1);
+      drum2.length(knob2);
+      drum2.secondMix(knob3);
+      drum2.pitchMod(knob4);
+      break;
+    case d3:
+      drum3.frequency(knob1);
+      drum3.length(knob2);
+      drum3.secondMix(knob3);
+      drum3.pitchMod(knob4);
+      break;
+    case d4:
+      HHAmpEnv.decay(knob1);
+      HHModEnv.decay(knob2);
+      HHfilter.frequency(knob3);
+      HHModAMpEnv.decay(knob4);
+      break;
     }
-  }
-
+}
 
 void playDrums() {
     
