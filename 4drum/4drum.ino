@@ -255,28 +255,36 @@ void readPots() {
 
   switch (mode) {
     case d1:
-      drum1.frequency(knob1);
-      drum1.length(knob2);
-      drum1.secondMix(knob3);
-      drum1.pitchMod(knob4);
+      if ((mod == true)) {
+        drum1.frequency(knob1);
+        drum1.length(knob2);
+        drum1.secondMix(knob3);
+        drum1.pitchMod(knob4);
+      }
       break;
     case d2:
-      drum2.frequency(knob1);
-      drum2.length(knob2);
-      drum2.secondMix(knob3);
-      drum2.pitchMod(knob4);
+      if ((mod == true)) {
+        drum2.frequency(knob1);
+        drum2.length(knob2);
+        drum2.secondMix(knob3);
+        drum2.pitchMod(knob4);
+      }
       break;
     case d3:
-      drum3.frequency(knob1);
-      drum3.length(knob2);
-      drum3.secondMix(knob3);
-      drum3.pitchMod(knob4);
+      if ((mod == true)) {
+        drum3.frequency(knob1);
+        drum3.length(knob2);
+        drum3.secondMix(knob3);
+        drum3.pitchMod(knob4);
+      }
       break;
     case d4:
-      HHAmpEnv.decay(knob1);
-      HHModEnv.decay(knob2);
-      HHfilter.frequency(knob3);
-      HHModAMpEnv.decay(knob4);
+      if ((mod == true)) {
+        HHAmpEnv.decay(knob1);
+        HHModEnv.decay(knob2);
+        HHfilter.frequency(knob3);
+        HHModAMpEnv.decay(knob4);
+      }
       break;
     }
 }
@@ -318,22 +326,27 @@ void starupCheese() {
   digitalWrite(led3, HIGH);
   delay(300);
   digitalWrite(led4, HIGH);
+  delay(300);
+  digitalWrite(modLed, HIGH);
   delay(1000);
   digitalWrite(led1, LOW);
   digitalWrite(led2, LOW);
   digitalWrite(led3, LOW);
   digitalWrite(led4, LOW);
+  digitalWrite(modLed, LOW);
   delay(500);
   digitalWrite(led1, HIGH);
   digitalWrite(led2, HIGH);
   digitalWrite(led3, HIGH);
   digitalWrite(led4, HIGH);
   digitalWrite(led4, HIGH);
+  digitalWrite(modLed, HIGH);
   delay(500);
   digitalWrite(led1, LOW);
   digitalWrite(led2, LOW);
   digitalWrite(led3, LOW);
   digitalWrite(led4, LOW);
+  digitalWrite(modLed, LOW);
   delay(500);
   digitalWrite(led1, HIGH);
 }
