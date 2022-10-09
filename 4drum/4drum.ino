@@ -57,9 +57,6 @@ AudioConnection          patchCord17(mixer1, 0, i2s1, 1);
 AudioControlSGTL5000     sgtl5000_1;     //xy=1600,33
 // GUItool: end automatically generated code
 
-
-
-// https://forum.arduino.cc/t/use-a-single-knob-for-mutli-variables/311022/14 
 // handling multiple variables with single pot 
 enum modes {d1, d2, d3, d4};
 modes mode; //the current mode must be stored in a global variable
@@ -177,6 +174,8 @@ void loop() {
 //    AudioProcessorUsageMaxReset();
 }
 
+
+// https://forum.arduino.cc/t/use-a-single-knob-for-mutli-variables/311022/14 
 void readButtons() {
   //read the button(s) in and change modes accordingly
   //currently this example only shows one button
@@ -247,7 +246,8 @@ void readButtons() {
 void readPots() {
   //read in the potentiometer values.
   //Depending on the mode, this will update different global variables
-
+  AudioNoInterrupts();
+  
   float knob1 = (float)analogRead(pot1)/2;   // frequency
   float knob2 = (float)analogRead(pot2)/2;   // length
   float knob3 = (float)analogRead(pot3)/2;   // secondMix
@@ -287,6 +287,7 @@ void readPots() {
       }
       break;
     }
+  AudioInterrupts();
 }
 
 void playDrums() {
