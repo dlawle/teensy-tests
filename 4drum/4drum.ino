@@ -352,6 +352,7 @@ void starupCheese() {
 }
 
 void modManager() {
+  AudioNoInterrupts();
    //read the button(s) in and change modes accordingly
   //currently this example only shows one button
   
@@ -393,4 +394,5 @@ void modManager() {
     }
   // save the button reading
   modLastButtonState = modReading;
+  AudioInterrupts();
 }
